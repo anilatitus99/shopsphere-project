@@ -43,5 +43,6 @@ images:
   - 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:$SHORT_SHA'
 
 options:
-  logStreamingOption: STREAM_ON
-  
+  serviceAccount: 1067194207588@cloudbuild.gserviceaccount.com
+  logsBucket: gs://shopspherebucket/
+
