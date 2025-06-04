@@ -8,3 +8,16 @@ steps:
         terraform validate
         terraform plan -out=tfplan
         terraform apply -auto-approve tfplan
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--platform=linux/amd64', '-t', 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:latest', '.']
+images:
+  - 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:latest'
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--platform=linux/amd64', '-t', 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:latest', '.']
+images:
+  - 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:latest'
+  
