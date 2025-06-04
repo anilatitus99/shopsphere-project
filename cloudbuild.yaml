@@ -1,23 +1,44 @@
 steps:
-  - name: 'hashicorp/terraform:1.5.7'
-    entrypoint: 'sh'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--platform=linux/amd64', '-t', 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:$SHORT_SHA', './frontend']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--platform=linux/amd64', '-t', 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:$SHORT_SHA', './backend']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:$SHORT_SHA']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:$SHORT_SHA']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
     args:
-      - '-c'
-      - |
-        terraform init
-        terraform validate
-        terraform plan -out=tfplan
-        terraform apply -auto-approve tfplan
+      [
+        'run',
+        'services',
+        'update',
+        'frontend',
+        '--image',
+        'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:$SHORT_SHA',
+        '--region=us-central1',
+        '--platform=managed',
+      ]
 
-steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '--platform=linux/amd64', '-t', 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:latest', '.']
-images:
-  - 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:latest'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      [
+        'run',
+        'services',
+        'update',
+        'backend',
+        '--image',
+        'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:$SHORT_SHA',
+        '--region=us-central1',
+        '--platform=managed',
+      ]
 
-steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '--platform=linux/amd64', '-t', 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:latest', '.']
 images:
-  - 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:latest'
+  - 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:$SHORT_SHA'
   
