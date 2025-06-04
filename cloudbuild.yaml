@@ -8,9 +8,5 @@ steps:
         terraform validate
         terraform plan
 
-# For deploying, uncomment this:
-#  - name: 'gcr.io/cloud-builders/terraform'
-#    args: ['apply', '-auto-approve', '-var', 'project_id=shopsphere-456123']
-
 options:
   logging: CLOUD_LOGGING_ONLY
