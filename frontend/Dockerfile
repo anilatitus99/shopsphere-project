@@ -1,11 +1,16 @@
-# Use official nginx image to serve static files
+# Use nginx base image
 FROM nginx:alpine
 
-# Copy all frontend files into nginx default directory
-COPY . /usr/share/nginx/html
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose port 80
-EXPOSE 80
+# Copy static website content
+COPY index.html /usr/share/nginx/html/
+COPY styles.css /usr/share/nginx/html/
+COPY script.js /usr/share/nginx/html/
+COPY favicon.ico /usr/share/nginx/html/
+COPY 404.html /usr/share/nginx/html/
 
-# Run nginx
+EXPOSE 8080
+
 CMD ["nginx", "-g", "daemon off;"]
