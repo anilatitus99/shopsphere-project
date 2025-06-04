@@ -41,4 +41,7 @@ steps:
 images:
   - 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:$SHORT_SHA'
   - 'us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:$SHORT_SHA'
-  
+
+options:
+  serviceAccount: your-service-account@project.iam.gserviceaccount.com
+  logStreamingOption: CLOUD_LOGGING_ONLY
