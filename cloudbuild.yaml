@@ -1,10 +1,12 @@
 steps:
-  - name: 'gcr.io/cloud-builders/terraform'
-    args: ['init']
-  - name: 'gcr.io/cloud-builders/terraform'
-    args: ['validate']
-  - name: 'gcr.io/cloud-builders/terraform'
-    args: ['plan', '-var', 'project_id=shopsphere-456123']
+  - name: hashicorp/terraform:light
+    entrypoint: /bin/sh
+    args:
+      - "-c"
+      - |
+        terraform init
+        terraform validate
+        terraform plan
 
 # For deploying, uncomment this:
 #  - name: 'gcr.io/cloud-builders/terraform'
@@ -12,4 +14,3 @@ steps:
 
 options:
   logging: CLOUD_LOGGING_ONLY
-  
