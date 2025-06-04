@@ -1,0 +1,11 @@
+steps:
+  - name: 'gcr.io/cloud-builders/terraform'
+    args: ['init']
+  - name: 'gcr.io/cloud-builders/terraform'
+    args: ['validate']
+  - name: 'gcr.io/cloud-builders/terraform'
+    args: ['plan', '-var', 'project_id=shopsphere-456123']
+
+# For deploying, uncomment this:
+#  - name: 'gcr.io/cloud-builders/terraform'
+#    args: ['apply', '-auto-approve', '-var', 'project_id=shopsphere-456123']
