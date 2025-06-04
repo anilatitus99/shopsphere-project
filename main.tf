@@ -1,30 +1,20 @@
 provider "google" {
-  project = var.project_id
-  region  = var.region
+  project = "shopsphere-456123"
+  region  = "us-central1"
 }
 
-resource "google_artifact_registry_repository" "repo" {
-  provider      = google
-  location      = var.region
-  repository_id = "shopsphere-artifacts"
-  format        = "DOCKER"
-  description   = "Artifact repo for Shopsphere CI/CD"
+module "cloudrun_frontend" {
+  source       = "./modules/cloudrun"
+  service_name = "frontend"
+  region       = "us-central1"
+  project_id   = "shopsphere-456123"
+  image        = "us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-frontend/frontend:latest"
 }
 
-resource "google_cloud_run_service" "frontend" {
-  name     = "frontend-service"
-  location = var.region
-
-  template {
-    spec {
-      containers {
-        image = "gcr.io/cloudrun/hello" # We'll replace this later
-      }
-    }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
+module "cloudrun_backend" {
+  source       = "./modules/cloudrun"
+  service_name = "backend"
+  region       = "us-central1"
+  project_id   = "shopsphere-456123"
+  image        = "us-central1-docker.pkg.dev/shopsphere-456123/shopsphere-backend/backend:latest"
 }

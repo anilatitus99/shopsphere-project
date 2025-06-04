@@ -1,12 +1,10 @@
 steps:
-  - name: hashicorp/terraform:light
-    entrypoint: /bin/sh
+  - name: 'hashicorp/terraform:1.5.7'
+    entrypoint: 'sh'
     args:
-      - "-c"
+      - '-c'
       - |
         terraform init
         terraform validate
-        terraform plan
-
-options:
-  logging: CLOUD_LOGGING_ONLY
+        terraform plan -out=tfplan
+        terraform apply -auto-approve tfplan
