@@ -1,0 +1,38 @@
+swagger: "2.0"
+info:
+  title: shopsphere-backend-api
+  description: API Gateway for ShopSphere backend
+  version: 1.0.0
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: x-api-key
+    in: header
+security:
+  - api_key: []
+x-google-backend:
+  address: https://backend-1067194207588.us-central1.run.app
+  protocol: h2
+paths:
+  /products:
+    get:
+      summary: Get product list
+      operationId: getProducts
+      responses:
+        '200':
+          description: A list of products
+          schema:
+            type: array
+            items:
+              type: object
+      security:
+        - api_key: []
+    post:
+      summary: Add product
+      operationId: addProduct
+      responses:
+        '201':
+          description: Product added
+      security:
+        - api_key: []
+        
